@@ -1,0 +1,40 @@
+server:
+  port: 8000
+
+spring:
+  application:
+    name: API-GATEWAY
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+
+      server:
+        webmvc:
+          routes:
+          - id: sensor_data_collector
+            uri: lb://SENSOR-DATA-SERVICE
+            predicates:
+              - Path=/api/conjunta/2p/sensor-readings/**
+            filters:
+              - StripPrefix=3
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+    fetch-registry: true
+    register-with-eureka: true
+  instance:
+    prefer-ip-address: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    health:
+      show-details: always

@@ -13,6 +13,7 @@
     <modules>
         <module>SensorDataCollector</module>
         <module>ms-eureka-server</module>
+        <module>ms-api-gateway</module>
     </modules>
 
 </project>

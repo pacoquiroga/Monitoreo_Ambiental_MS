@@ -7,6 +7,7 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="ms-api-gateway" />
         <module name="ms-eureka-server" />
       </profile>
       <profile name="Annotation profile for microservicios_examen_22747" enabled="true">
@@ -27,6 +28,7 @@
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="SensorDataCollector" options="-parameters" />
       <module name="eureka" options="-parameters" />
+      <module name="ms-api-gateway" options="-parameters" />
       <module name="ms-eureka-server" options="-parameters" />
     </option>
   </component>
