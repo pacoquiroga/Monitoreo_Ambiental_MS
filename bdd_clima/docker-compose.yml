@@ -1,0 +1,37 @@
+version: "3.8"
+
+services:
+  crdb-nodo1:
+    image: cockroachdb/cockroach:latest
+    container_name: crdb-nodo1
+    command: start --insecure --join=crdb-nodo1,crdb-nodo2,crdb-nodo3 --advertise-host=crdb-nodo1 --locality=region=us-east,zone=zone1
+    volumes:
+      - crdb-data1:/cockroach/cockroach-data
+    ports:
+      - "26357:26257"
+      - "8080:8080"
+
+  crdb-nodo2:
+    image: cockroachdb/cockroach:latest
+    container_name: crdb-nodo2
+    command: start --insecure --join=crdb-nodo1,crdb-nodo2,crdb-nodo3 --advertise-host=crdb-nodo2 --locality=region=us-west,zone=zone2
+    volumes:
+      - crdb-data2:/cockroach/cockroach-data
+    ports:
+      - "26358:26257"
+      - "8081:8080"
+
+  crdb-nodo3:
+    image: cockroachdb/cockroach:latest
+    container_name: crdb-nodo3
+    command: start --insecure --join=crdb-nodo1,crdb-nodo2,crdb-nodo3 --advertise-host=crdb-nodo3 --locality=region=us-east,zone=zone3
+    volumes:
+      - crdb-data3:/cockroach/cockroach-data
+    ports:
+      - "26359:26257"
+      - "8082:8080"
+
+volumes:
+  crdb-data1:
+  crdb-data2:
+  crdb-data3:
