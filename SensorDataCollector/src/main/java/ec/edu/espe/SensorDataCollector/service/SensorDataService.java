@@ -1,11 +1,11 @@
 package ec.edu.espe.SensorDataCollector.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import ec.edu.espe.SensorDataCollector.dto.EventDto;
 import ec.edu.espe.SensorDataCollector.dto.SensorDataDto;
 import ec.edu.espe.SensorDataCollector.model.SensorData;
+import ec.edu.espe.SensorDataCollector.producer.EventProducer;
+import ec.edu.espe.SensorDataCollector.producer.SensorDataProducer;
 import ec.edu.espe.SensorDataCollector.repository.SensorDataRepository;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -17,10 +17,10 @@ public class SensorDataService {
     private SensorDataRepository sensorDataRepository;
 
     @Autowired
-    private RabbitTemplate template;
+    private SensorDataProducer sensorDataProducer;
 
     @Autowired
-    private ObjectMapper mapper;
+    private EventProducer eventProducer;
 
     public SensorData saveSensorData(SensorDataDto sensorDataDto) {
         try{
@@ -39,10 +39,8 @@ public class SensorDataService {
                     sensorData.getTimestamp()
             );
 
-            String json = mapper.writeValueAsString(eventDto);
-            template.convertAndSend("event.queue", json);
-
-            System.out.println("Evento enviado" + json);
+            eventProducer.enviarEvento(eventDto);
+            sensorDataProducer.enviarSensorData(sensorData);
 
             return sensorDataRepository.save(sensorData);
         }catch (Exception e) {

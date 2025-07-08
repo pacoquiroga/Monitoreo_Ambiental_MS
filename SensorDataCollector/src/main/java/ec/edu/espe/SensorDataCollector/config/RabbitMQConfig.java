@@ -12,4 +12,8 @@ public class RabbitMQConfig {
     public Queue eventQueue() {
         return QueueBuilder.durable("event.queue").build();
     }
+    @Bean
+    public Queue sensorDataQueue() {
+        return QueueBuilder.durable("sensorData.queue").build();
+    }
 }
