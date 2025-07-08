@@ -21,7 +21,40 @@ public class AlertListener {
     public void recibirAlerta(String mensajeJson) {
         try {
 
-            NotificacionDto notificacion = mapper.readValue(mensajeJson, NotificacionDto.class);
+            AlertDto alert = mapper.readValue(mensajeJson, AlertDto.class);
+
+            NotificacionDto notificacion = new NotificacionDto();
+            notificacion.setEvent_type(alert.getType());
+            notificacion.setStatus("CRITICAL");
+
+            String mensaje;
+
+            switch (alert.getType()) {
+                case "HighTemperatureAlert":
+                    mensaje = "¡Alerta! Alta temperatura detectada: "
+                            + alert.getValue() + "°C en el sensor "
+                            + alert.getSensorId()
+                            + ". Umbral: 40°C.";
+                    break;
+                case "LowHumidityWarning":
+                    mensaje = "Advertencia: Humedad baja detectada: "
+                            + alert.getValue() + "% en el sensor "
+                            + alert.getSensorId()
+                            + ". Umbral mínimo: 20%.";
+                    break;
+                case "SeismicActivityDetected":
+                    mensaje = "¡Atención! Actividad sísmica detectada: "
+                            + alert.getValue() + " en el sensor "
+                            + alert.getSensorId()
+                            + ". Umbral: 3.0.";
+                    break;
+                default:
+                    mensaje = "Alerta generada para el sensor "
+                            + alert.getSensorId()
+                            + ": " + alert.getType();
+            }
+
+            notificacion.setMessage(mensaje);
 
             notificationService.enviarPush(notificacion);
             notificationService.enviarCorreo(notificacion);

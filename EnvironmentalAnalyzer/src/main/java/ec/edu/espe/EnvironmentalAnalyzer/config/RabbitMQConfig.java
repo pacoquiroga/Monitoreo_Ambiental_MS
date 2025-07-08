@@ -7,6 +7,6 @@ import org.springframework.context.annotation.Bean;
 public class RabbitMQConfig {
     @Bean
     public Queue notificacionesqueue(){
-        return QueueBuilder.durable("event.queue").build();
+        return QueueBuilder.durable("event.cola").build();
     }
 }

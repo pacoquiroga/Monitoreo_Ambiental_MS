@@ -18,7 +18,7 @@ public class SensorDataProducer {
         try {
             System.out.println(sensorData);
             String json = objectMapper.writeValueAsString(sensorData);
-            rabbitTemplate.convertAndSend("sensorData.queue", json);
+            rabbitTemplate.convertAndSend("sensorData.cola", json);
             System.out.println("Enviando sensorData");
         } catch (Exception e) {
             e.printStackTrace();

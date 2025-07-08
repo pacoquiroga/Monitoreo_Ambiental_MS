@@ -15,7 +15,7 @@ public class EventListener {
     @Autowired
     private ObjectMapper objectMapper;
 
-    @RabbitListener(queues = "event.queue")
+    @RabbitListener(queues = "event.cola")
     public void recibirEventos(String mensaje){
         try{
             EventDto sensorDto = objectMapper.readValue(mensaje, EventDto.class);
