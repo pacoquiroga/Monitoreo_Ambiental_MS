@@ -11,5 +11,9 @@ public class RabbitMQConfig {
     public Queue notificacionesAmbienteCola() {
         return QueueBuilder.durable("alert.cola").build();
     }
+    @Bean
+    public Queue notificacionesCola() {
+        return QueueBuilder.durable("notificationAmbiental.cola").build();
+    }
 
 }
