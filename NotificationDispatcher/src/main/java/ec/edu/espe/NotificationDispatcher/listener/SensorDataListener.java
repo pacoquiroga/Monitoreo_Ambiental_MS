@@ -16,7 +16,7 @@ public class SensorDataListener {
     @Autowired
     private NotificationService notificationService;
 
-    @RabbitListener(queues = "sensorData.queue")
+    @RabbitListener(queues = "sensorData.cola")
     public void recibirSensorData(String mensajeJson) {
         try {
             SensorDataDto sensorDataDto = mapper.readValue(mensajeJson, SensorDataDto.class);

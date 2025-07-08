@@ -20,22 +20,23 @@ public class NotificationService {
     public void guardarNotificacion(NotificacionDto dto) {
         Notificacion notificacion = new Notificacion();
 
-        notificacion.setMessage(dto.getMensaje());
-        notificacion.setEvent_type(dto.getTipo());
+        notificacion.setMessage(dto.getMessage());
+        notificacion.setEvent_type(dto.getEvent_type());
+        notificacion.setStatus(dto.getStatus());
         notificacion.setFecha(LocalDateTime.now());
         repository.save(notificacion);
     }
 
     public void enviarPush(NotificacionDto notificacion) {
-        System.out.println("[Push] Notificación push enviada: " + notificacion.getMensaje());
+        System.out.println("[Push] Notificación push enviada: " + notificacion.getMessage());
     }
 
     public void enviarCorreo(NotificacionDto notificacion) {
-        logger.info("[Correo] Enviando correo: {}", notificacion.getMensaje());
+        logger.info("[Correo] Enviando correo: {}", notificacion.getMessage());
     }
 
     public void enviarSms(NotificacionDto notificacion) {
-        logger.info("[SMS] Enviando SMS: {}", notificacion.getMensaje());
+        logger.info("[SMS] Enviando SMS: {}", notificacion.getMessage());
     }
 
 

@@ -25,7 +25,7 @@ public class AlertListener {
 
             NotificacionDto notificacion = new NotificacionDto();
             notificacion.setEvent_type(alert.getType());
-            notificacion.setStatus("CRITICAL");
+
 
             String mensaje;
 
@@ -55,6 +55,7 @@ public class AlertListener {
             }
 
             notificacion.setMessage(mensaje);
+            notificacion.setStatus("CRITICAL");
 
             notificationService.enviarPush(notificacion);
             notificationService.enviarCorreo(notificacion);
