@@ -19,23 +19,24 @@ public class AlertService {
     private AlertProducer alertProducer;
 
     public Alert crearAlerta(EventDto dto) {
-        try{
+        try {
             String type;
             double threshold;
-            if(dto.getType() == "temperature" && dto.getValue() > 40){
+
+            if ("temperature".equals(dto.getType()) && dto.getValue() > 40) {
                 type = "HighTemperatureAlert";
                 threshold = 40.0;
-            } else if(dto.getType() == "humidity" && dto.getValue() < 20) {
+            } else if ("humidity".equals(dto.getType()) && dto.getValue() < 20) {
                 type = "LowHumidityWarning";
                 threshold = 20.0;
-            } else if(dto.getType() == "seismicActivity" && dto.getValue() > 3.0){
+            } else if ("seismicActivity".equals(dto.getType()) && dto.getValue() > 3.0) {
                 type = "SeismicActivityDetected";
                 threshold = 3.0;
-            }
-            else {
-                // No alert condition met
+            } else {
+                System.out.println("No se generó alerta para: " + dto.getType() + " valor: " + dto.getValue());
                 return null;
             }
+
             Alert alert = new Alert();
             alert.setSensorId(dto.getSensorId());
             alert.setValue(dto.getValue());
@@ -45,13 +46,16 @@ public class AlertService {
 
             alertProducer.enviarAlerta(alert);
 
+            System.out.println("Alerta creada con sucesso: " + alert);
+
             return alertRepository.save(alert);
-        }catch (Exception e) {
+
+        } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException("Error creando la alerta", e);
         }
-
     }
+
 
     public Alert obtenerAlertaPorId(Long id) {
         return alertRepository.findById(id).orElse(null);

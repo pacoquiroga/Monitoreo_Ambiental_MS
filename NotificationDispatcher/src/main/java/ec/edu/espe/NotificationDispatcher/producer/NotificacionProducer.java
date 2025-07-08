@@ -2,6 +2,7 @@ package ec.edu.espe.NotificationDispatcher.producer;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import ec.edu.espe.NotificationDispatcher.dto.NotificacionDto;
+import ec.edu.espe.NotificationDispatcher.model.Notificacion;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,7 +15,7 @@ public class NotificacionProducer {
     @Autowired
     private ObjectMapper objectMapper;
 
-    public void enviarNotificacion(NotificacionDto notificacion) {
+    public void enviarNotificacion(Notificacion notificacion) {
         try {
             System.out.println(notificacion);
             String json = objectMapper.writeValueAsString(notificacion);

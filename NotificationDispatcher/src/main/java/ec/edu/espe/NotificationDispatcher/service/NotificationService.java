@@ -2,6 +2,7 @@ package ec.edu.espe.NotificationDispatcher.service;
 
 import ec.edu.espe.NotificationDispatcher.dto.NotificacionDto;
 import ec.edu.espe.NotificationDispatcher.model.Notificacion;
+import ec.edu.espe.NotificationDispatcher.producer.NotificacionProducer;
 import ec.edu.espe.NotificationDispatcher.repository.NotificacionRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,6 +16,9 @@ public class NotificationService {
     @Autowired
     private NotificacionRepository repository;
 
+    @Autowired
+    private NotificacionProducer producer;
+
     private static final Logger logger = LoggerFactory.getLogger(NotificationService.class);
 
     public void guardarNotificacion(NotificacionDto dto) {
@@ -25,6 +29,9 @@ public class NotificationService {
         notificacion.setStatus(dto.getStatus());
         notificacion.setFecha(LocalDateTime.now());
         repository.save(notificacion);
+
+        producer.enviarNotificacion(notificacion);
+
     }
 
     public void enviarPush(NotificacionDto notificacion) {

@@ -1,7 +1,7 @@
-package ec.edu.espe.EnvironmentalAnalyzer.listener;
+package ec.edu.espe.SensorDataCollector.listener;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import ec.edu.espe.EnvironmentalAnalyzer.dto.NotificacionDto;
+import ec.edu.espe.SensorDataCollector.dto.NotificacionDto;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

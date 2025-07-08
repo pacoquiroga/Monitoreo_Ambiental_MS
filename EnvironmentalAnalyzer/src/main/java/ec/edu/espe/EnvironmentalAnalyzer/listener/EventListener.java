@@ -20,7 +20,7 @@ public class EventListener {
         try{
             EventDto sensorDto = objectMapper.readValue(mensaje, EventDto.class);
             alertService.crearAlerta(sensorDto);
-            System.out.println(sensorDto);
+            System.out.println("Event listener"+sensorDto);
         }catch (Exception e){
             e.printStackTrace();
         }
