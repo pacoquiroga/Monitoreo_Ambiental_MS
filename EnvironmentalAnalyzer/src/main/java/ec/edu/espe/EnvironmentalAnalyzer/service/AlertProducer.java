@@ -1,28 +1,27 @@
-package ec.edu.espe.SensorDataCollector.producer;
+package ec.edu.espe.EnvironmentalAnalyzer.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import ec.edu.espe.SensorDataCollector.dto.EventDto;
+import ec.edu.espe.EnvironmentalAnalyzer.model.Alert;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class EventProducer {
+public class AlertProducer {
     @Autowired
     private RabbitTemplate rabbitTemplate;
 
     @Autowired
     private ObjectMapper objectMapper;
 
-    public void enviarEvento(EventDto evento) {
+    public void enviarAlerta(Alert alerta) {
         try {
-            System.out.println(evento);
-            String json = objectMapper.writeValueAsString(evento);
-            rabbitTemplate.convertAndSend("event.cola", json);
-            System.out.println("Enviando evento");
+            System.out.println(alerta);
+            String json = objectMapper.writeValueAsString(alerta);
+            rabbitTemplate.convertAndSend("alert.cola", json);
+            System.out.println("Enviando alerta");
         } catch (Exception e) {
             e.printStackTrace();
- }
-}
-
+        }
+    }
 }

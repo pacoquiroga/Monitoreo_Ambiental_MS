@@ -1,11 +1,8 @@
 package ec.edu.espe.EnvironmentalAnalyzer.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import ec.edu.espe.EnvironmentalAnalyzer.dto.EventDto;
-import ec.edu.espe.EnvironmentalAnalyzer.dto.NotificacionDto;
 import ec.edu.espe.EnvironmentalAnalyzer.model.Alert;
 import ec.edu.espe.EnvironmentalAnalyzer.repository.AlertRepository;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,10 +16,7 @@ public class AlertService {
     private AlertRepository alertRepository;
 
     @Autowired
-    private RabbitTemplate template;
-
-    @Autowired
-    private ObjectMapper mapper;
+    private AlertProducer alertProducer;
 
     public Alert crearAlerta(EventDto dto) {
         try{
@@ -49,42 +43,7 @@ public class AlertService {
             alert.setType(type);
             alert.setThreshold(threshold);
 
-            NotificacionDto notificacion = new NotificacionDto();
-            notificacion.setEvent_type(alert.getType());
-            notificacion.setStatus("CRITICAL");
-
-            String mensaje;
-
-            switch (alert.getType()) {
-                case "HighTemperatureAlert":
-                    mensaje = "¡Alerta! Alta temperatura detectada: "
-                            + alert.getValue() + "°C en el sensor "
-                            + alert.getSensorId()
-                            + ". Umbral: 40°C.";
-                    break;
-                case "LowHumidityWarning":
-                    mensaje = "Advertencia: Humedad baja detectada: "
-                            + alert.getValue() + "% en el sensor "
-                            + alert.getSensorId()
-                            + ". Umbral mínimo: 20%.";
-                    break;
-                case "SeismicActivityDetected":
-                    mensaje = "¡Atención! Actividad sísmica detectada: "
-                            + alert.getValue() + " en el sensor "
-                            + alert.getSensorId()
-                            + ". Umbral: 3.0.";
-                    break;
-                default:
-                    mensaje = "Alerta generada para el sensor "
-                            + alert.getSensorId()
-                            + ": " + alert.getType();
-            }
-
-            notificacion.setMessage(mensaje);
-
-            String json = mapper.writeValueAsString(alert);
-            template.convertAndSend("alert.cola", json);
-            System.out.println("Notificacion Alerta enviada" + json);
+            alertProducer.enviarAlerta(alert);
 
             return alertRepository.save(alert);
         }catch (Exception e) {

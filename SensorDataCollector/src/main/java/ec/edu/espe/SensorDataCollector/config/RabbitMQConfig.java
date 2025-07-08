@@ -10,10 +10,10 @@ import org.springframework.context.annotation.Configuration;
 public class RabbitMQConfig {
     @Bean
     public Queue eventQueue() {
-        return QueueBuilder.durable("event.queue").build();
+        return QueueBuilder.durable("event.cola").build();
     }
     @Bean
     public Queue sensorDataQueue() {
-        return QueueBuilder.durable("sensorData.queue").build();
+        return QueueBuilder.durable("sensorData.cola").build();
     }
 }
